@@ -1,0 +1,18 @@
+Lexuan Zhou g5zhoule
+0,1,11426,/u/csc209h/winter/pub/bin/checkstep1 ,Step 1 successfully completed.
+1,2,11426,/u/csc209h/winter/pub/bin/checkstep2 ,The SHELL variable is not bash
+1,2,11426,/u/csc209h/winter/pub/bin/checkstep2 ,The SHELL variable is not bash
+1,2,11426,/u/csc209h/winter/pub/bin/checkstep2 ,The SHELL variable is not bash
+1,2,11426,/u/csc209h/winter/pub/bin/checkstep2 ,The SHELL variable is not bash
+0,2,11426,/u/csc209h/winter/pub/bin/checkstep2 ,Step 2 successfully completed.
+0,3,11426,checkstep3 ,Step 3 successfully completed.
+0,3,11426,checkstep3 ,Step 3 successfully completed.
+0,5,11426,checkstep5 ,Step 5 successfully completed.
+1,6,11426,checkstep6 ,There is a file that doesn't belong
+0,6,11426,checkstep6 ,Step 6 successfully completed.
+0,71,11426,checkstep71 -p 35652 ,Step 7.1 successfully completed.
+0,72,11426,checkstep72 ,Step 7.2 successfully completed.
+1,8,11426,checkstep8 -n 33 ,Number of processes did not match.
+0,8,11426,checkstep8 -n 194 ,Step 8 successfully completed.
+1,8,11426,checkstep8 -n 195 ,Number of processes did not match.
+0,8,11426,checkstep8 -n 194 ,Step 8 successfully completed.

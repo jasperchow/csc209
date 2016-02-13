@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_NAME_SZ 127
+#define MAX_CM_SZ 127
+
+
+int main(int argc, char **argv){
+
+  char name[MAX_NAME_SZ];
+  int pid = 0;
+  float cpu = 0.0;
+  float mem = 0.0;
+  long vsz = 0;
+  long rss = 0;
+  char tt[4];
+  char stat[2];
+  char started[10];
+  char tim[10];
+  char command[MAX_CM_SZ];
+
+  if (argc < 2 || argc > 3){
+    printf("Usage: ");
+    return 1;
+  }
+  //scan the standard input as a formatted string
+  while ( scanf("%s %d %f %f %ld %ld %s %s %s %s %s127[^\n]",name,&pid,&cpu,&mem,&vsz,
+    &rss,tt,stat,started,tim,command )!=  EOF){
+
+
+    //there are 2 arguemnts and the first argument would be -m
+    if (strcasecmp("-c",argv[1]) && argc == 3){
+        if (strcasecmp(name,argv[2])){
+            printf("%.1f",mem);
+        }
+    }
+    //there are 2 arguments and the first argument would be -c
+    if (strcasecmp("-m",argv[1]) && argc == 3){
+        if (strcasecmp(name,argv[2])){
+          printf("%.1f",cpu);
+        }
+
+    }
+    // the first auguement would be username
+    if(argc == 2){
+        if (strcasecmp(name,argv[1])){
+        printf("%d\t%.1f\t%.1f\t%s\n",pid,cpu,mem,command);
+        }
+    }
+  }
+  return 0;
+}

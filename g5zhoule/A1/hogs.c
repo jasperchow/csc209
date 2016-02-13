@@ -1,0 +1,125 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
+#include <string.h>
+
+#define MAX_NAME_SZ 127
+#define MAX_CM_SZ 127
+
+
+int main(int argc, char **argv){
+
+  char name[MAX_NAME_SZ];
+  int pid = 0;
+  float cpu = 0.0;
+  float mem = 0.0;
+  long vsz = 0;
+  long rss = 0;
+  char tt[127];
+  char stat[127];
+  char started[127];
+  char tim[127];
+  char command[MAX_CM_SZ];
+  int  c_m_swtich = 0;
+
+  char largest_command[MAX_CM_SZ];
+  //make sure the first cpu & mem with 0.0 can be recoreded
+  float largest = -1.0;
+  int largest_pid = 0;
+
+  if (argc < 2 || argc > 3){
+    printf("Usage: program [-c | -m] username.\n");
+    return 1;
+  }
+
+  //scan the standard input as a formatted string
+  while ( scanf("%s %d %f %f %ld %ld %s %s %s %s %127[^\n]",name,&pid,&cpu,
+          &mem,&vsz,&rss,tt,stat,started,tim,command )!=  EOF){
+
+    //there are 2 arguemnts and the first argument would be -m
+    if (strcmp("-m",argv[1]) == 0 && argc == 3){
+
+          //compare the username and the argument
+          if (strncmp(name,argv[2],MAX_NAME_SZ)==0){
+
+              c_m_swtich = 1;
+              //if the %mem in th second line is larger than the one in the
+              //first line, change the pid, %mem and the command
+              if ( mem >= largest){
+              largest_pid = pid;
+              largest = mem;
+              strncpy(largest_command,command,MAX_CM_SZ);
+            }
+              //if the %mem in two lines are the same, compare the first
+              //character in the comman
+              else if( mem == largest){
+
+                  if(strncasecmp(largest_command,command,MAX_CM_SZ)>0){
+                      largest_pid = pid;
+                      largest = mem;
+                      strncpy(largest_command,command,MAX_CM_SZ);
+                    }
+            }
+          }
+    }
+
+    //there are 2 arguments and the first argument would be -c
+    else if (strcmp("-c",argv[1]) == 0 && argc == 3){
+
+          // compare the username and the argument
+          if (strncmp(name,argv[2],MAX_NAME_SZ)==0){
+
+              c_m_swtich = 1;
+
+              //if the %cpu in th second line is larger than the one in the
+              //first line, change the pid, %cpu and the command
+              if (cpu >= largest){
+              largest_pid = pid;
+              largest = cpu;
+              strncpy(largest_command,command,MAX_CM_SZ);
+              }
+
+              //if the %cpu in second line is larger than the first one,
+              //change the %cpu,the pid and the command
+              else if ( cpu == largest){
+                  if(strncasecmp(largest_command,command,MAX_CM_SZ)>0){
+                    largest_pid = pid;
+                    largest = cpu;
+                    strncpy(largest_command,command,MAX_CM_SZ);
+                  }
+              }
+          }
+    }
+    //the only auguement would be username,print out the same information
+    //    as the -c
+    else if(argc == 2 && strncmp(name,argv[1],MAX_NAME_SZ) == 0){
+
+                 c_m_swtich = 1;
+
+                 //if the %cpu in second line is larger than the first one,
+                 //change the %cpu,the pid and the command
+                  if (cpu >= largest){
+                   largest_pid = pid;
+                   largest = cpu;
+                   strncpy(largest_command,command,MAX_CM_SZ);
+                 }
+
+                 //if the %cpu of two lines are the same, find the one which
+                 //begins with the smaller character in the command
+                 else if (cpu == largest){
+                     if(strncasecmp(largest_command,command,MAX_CM_SZ)>0){
+                       largest_pid = pid;
+                       largest = cpu;
+                       strncpy(largest_command,command,MAX_CM_SZ);
+                     }
+                 }
+    }
+  }
+
+  if (c_m_swtich == 1){
+      //print out the corresponding pid, (%cpu or %mem), and command if
+      //the username and -m or -c are found, otherwise print out nothing
+      printf("%d\t%.1f\t%s\n",largest_pid,largest,largest_command);
+  }
+  return 0;
+}
